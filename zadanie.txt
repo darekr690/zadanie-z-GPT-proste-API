@@ -1,0 +1,99 @@
+Jasne — poniżej masz **gotowe zadanie rekrutacyjne**, tak jakby rekruter wręczył Ci je w PDF-ie.
+Krótkie, konkretne, bez instrukcji, tylko wymagania i cel.
+
+---
+
+# 📝 **Zadanie Rekrutacyjne – Proste API w Pythonie**
+
+## 🎯 **Cel zadania**
+
+Stworzyć niewielką usługę REST, która pozwala na podstawowe przetwarzanie tekstu. Projekt ma pokazać, że potrafisz pracować z Pythonem, tworzyć API, korzystać z Gita i organizować projekt w sposób zbliżony do rzeczywistej pracy.
+
+---
+
+## 🧰 **Technologie, które masz wykorzystać**
+
+* **Python** (preferowane: FastAPI lub Flask)
+* **Git** (branch → commit → PR → merge)
+* **Ubuntu + VS Code**
+* REST API
+
+---
+
+## 📌 **Opis zadania**
+
+Zbuduj małe API, które udostępnia dwa endpointy:
+
+### **1. `GET /health`**
+
+Zwraca informację o statusie działania aplikacji w formacie JSON, np.:
+
+```json
+{ "status": "ok" }
+```
+
+### **2. `POST /process`**
+
+Endpoint przyjmuje obiekt JSON z polem:
+
+```json
+{ "text": "dowolny tekst" }
+```
+
+i zwraca:
+
+* liczbę słów w tekście,
+* oryginalny tekst.
+
+Przykład odpowiedzi:
+
+```json
+{
+  "text": "dowolny tekst",
+  "word_count": 2
+}
+```
+
+---
+
+## 🧪 **Wymagania dodatkowe**
+
+1. Utwórz **testy automatyczne** dla obu endpointów (np. pytest lub unittest).
+2. Projekt powinien mieć plik **requirements.txt**.
+3. Aplikacja musi uruchamiać się lokalnie jednym poleceniem (np. `uvicorn main:app --reload`).
+4. Endpointy powinny być opisane w automatycznej dokumentacji API (Swagger / OpenAPI – wbudowane w FastAPI).
+
+---
+
+## 🔧 **Wymagania związane z Gitem**
+
+1. Utwórz nowy branch o nazwie `feature/api`.
+2. Zapisuj logiczne commity podczas pracy.
+3. Wygeneruj Pull Request do głównego brancha (`main`):
+
+   * dodaj opis PR-a,
+   * wymień w nim zrealizowane elementy zadania.
+4. Po zakończeniu pracy wykonaj merge.
+
+---
+
+## 📦 **Efekt końcowy**
+
+Repozytorium, w którym znajdują się:
+
+* kod aplikacji,
+* testy,
+* plik `requirements.txt`,
+* instrukcja uruchomienia projektu w pliku `README.md`,
+* historia commitów w `feature/api`,
+* zamknięty Pull Request.
+
+---
+
+## ⏱ **Czas realizacji**
+
+Około 1–2 godziny.
+
+---
+
+Jeśli chcesz, mogę przygotować drugie (trudniejsze) zadanie — np. API + PostgreSQL, OAuth albo Docker.
