@@ -40,3 +40,8 @@ curl -X POST http://127.0.0.1:8000/process \
   -d '{"text": "dowolny tekst"}'
 ```
 TT
+
+echo "Main branch update - simulate conflict" >> README.md
+git add README.md
+git commit -m "Simulate update in main branch causing conflict"
+git push
