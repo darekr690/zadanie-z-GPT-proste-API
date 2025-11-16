@@ -1,10 +1,11 @@
 # Text Processing API
 
-Prosty serwis REST napisany w FastAPI, który udostępnia trzy endpointy:
+Prosty serwis REST napisany w FastAPI, który udostępnia cztery endpointy:
 
 - `GET /health` – sprawdza kondycję aplikacji.
 - `POST /process` – przyjmuje tekst i zwraca liczbę słów oraz oryginalny tekst.
 - `POST /uppercase` – waliduje tekst i zwraca jego wersję zapisaną wielkimi literami wraz z metadanymi.
+- `POST /stats` – zwraca liczbę słów i znaków dla podanego tekstu.
 
 ## Endpointy
 
@@ -16,6 +17,11 @@ Prosty serwis REST napisany w FastAPI, który udostępnia trzy endpointy:
 - **Body (JSON)**: `{ "text": "dowolny tekst" }`
 - **Odpowiedź**: `{ "text": "dowolny tekst", "word_count": 2 }`
 - **Zastosowanie**: oblicza liczbę słów w tekście przy zachowaniu oryginalnej treści.
+
+### POST /stats
+- **Body (JSON)**: `{ "text": "dowolny tekst" }`
+- **Odpowiedź**: `{ "text": "dowolny tekst", "word_count": 2, "char_count": 13 }`
+- **Zastosowanie**: zwraca podstawowe statystyki tekstu (liczba słów i znaków).
 
 ### POST /uppercase
 - **Body (JSON)**: `{ "text": "dowolny tekst" }`
@@ -57,4 +63,15 @@ curl -X POST http://127.0.0.1:8000/process \
   -H "Content-Type: application/json" \
   -d '{"text": "dowolny tekst"}'
 ```
-TT
+
+```bash
+curl -X POST http://127.0.0.1:8000/stats \
+  -H "Content-Type: application/json" \
+  -d '{"text": "dowolny tekst"}'
+```
+
+```bash
+curl -X POST http://127.0.0.1:8000/uppercase \
+  -H "Content-Type: application/json" \
+  -d '{"text": "Dowolny Tekst"}'
+```

@@ -27,6 +27,27 @@ def test_process_endpoint_handles_empty_text():
     assert response.json()["word_count"] == 0
 
 
+def test_stats_endpoint_returns_counts():
+    payload = {"text": "Dowolny   Tekst"}
+    response = client.post("/stats", json=payload)
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "text": payload["text"],
+        "word_count": 2,
+        "char_count": len(payload["text"]),
+    }
+
+
+def test_stats_endpoint_handles_empty_text():
+    response = client.post("/stats", json={"text": ""})
+
+    assert response.status_code == 200
+    data = response.json()
+    assert data["word_count"] == 0
+    assert data["char_count"] == 0
+
+
 def test_uppercase_endpoint_success():
     payload = {"text": "Dowolny Tekst"}
     response = client.post("/uppercase", json=payload)

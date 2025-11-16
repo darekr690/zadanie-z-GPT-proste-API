@@ -17,6 +17,20 @@ class ProcessedText(BaseModel):
     word_count: int
 
 
+class StatsRequest(BaseModel):
+    text: str = Field(
+        ...,
+        description="Text that will be analyzed for statistics.",
+        json_schema_extra={"example": "dowolny tekst"},
+    )
+
+
+class StatsResponse(BaseModel):
+    text: str = Field(..., description="Original text provided in the request.")
+    word_count: int = Field(..., ge=0, description="Number of words in the text.")
+    char_count: int = Field(..., ge=0, description="Number of characters in the text.")
+
+
 class UppercaseRequest(BaseModel):
     text: str = Field(
         ...,
@@ -51,6 +65,33 @@ def health() -> dict:
 @app.post("/process", response_model=ProcessedText)
 def process_text(payload: TextPayload) -> ProcessedText:
     return ProcessedText(text=payload.text, word_count=count_words(payload.text))
+
+
+@app.post(
+    "/stats",
+    response_model=StatsResponse,
+    summary="Return word and character statistics",
+    response_description="Word and character counts for the provided text.",
+)
+def text_stats(
+    payload: StatsRequest = Body(
+        ...,
+        examples={
+            "default": {
+                "summary": "Statystyki tekstu",
+                "description": "Policz liczbę słów i znaków w tekście.",
+                "value": {"text": "dowolny tekst"},
+            }
+        },
+    )
+) -> StatsResponse:
+    """Return the original text along with its word and character counts."""
+
+    return StatsResponse(
+        text=payload.text,
+        word_count=count_words(payload.text),
+        char_count=len(payload.text),
+    )
 
 
 @app.post(
