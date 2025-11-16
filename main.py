@@ -24,9 +24,9 @@ def count_words(text: str) -> int:
 
 @app.get("/health")
 def health() -> dict:
-    return {"status": "ok"}
+    return {"status": "ok"
 
 
-@app.post("/process", response_model=ProcessedText)
+@app.post("/process", response_model=ProcessedText
 def process_text(payload: TextPayload) -> ProcessedText:
     return ProcessedText(text=payload.text, word_count=count_words(payload.text))
