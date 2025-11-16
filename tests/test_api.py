@@ -36,6 +36,7 @@ def test_stats_endpoint_returns_counts():
         "text": payload["text"],
         "word_count": 2,
         "char_count": len(payload["text"]),
+        "unique_words": 2,
     }
 
 
@@ -46,6 +47,7 @@ def test_stats_endpoint_handles_empty_text():
     data = response.json()
     assert data["word_count"] == 0
     assert data["char_count"] == 0
+    assert data["unique_words"] == 0
 
 
 def test_uppercase_endpoint_success():

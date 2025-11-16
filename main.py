@@ -1,3 +1,5 @@
+import re
+
 from fastapi import Body, FastAPI
 from pydantic import BaseModel, Field, field_validator
 
@@ -29,6 +31,11 @@ class StatsResponse(BaseModel):
     text: str = Field(..., description="Original text provided in the request.")
     word_count: int = Field(..., ge=0, description="Number of words in the text.")
     char_count: int = Field(..., ge=0, description="Number of characters in the text.")
+    unique_words: int = Field(
+        ...,
+        ge=0,
+        description="Number of unique words in the text (case-insensitive, punctuation ignored).",
+    )
 
 
 class UppercaseRequest(BaseModel):
@@ -52,9 +59,33 @@ class UppercaseResponse(BaseModel):
     length: int = Field(..., ge=0, description="Length of the original text in characters.")
 
 
+WORD_PATTERN = re.compile(r"\b\w+\b", re.UNICODE)
+
+
 def count_words(text: str) -> int:
     words = [word for word in text.split() if word]
     return len(words)
+
+
+def extract_normalized_words(text: str) -> list[str]:
+    """Return lowercase words stripped of punctuation using a simple word regex."""
+
+    if not text:
+        return []
+    return WORD_PATTERN.findall(text.lower())
+
+
+def count_unique_words(text: str) -> int:
+    return len(set(extract_normalized_words(text)))
+
+
+def build_stats_response(text: str) -> StatsResponse:
+    return StatsResponse(
+        text=text,
+        word_count=count_words(text),
+        char_count=len(text),
+        unique_words=count_unique_words(text),
+    )
 
 
 @app.get("/health")
@@ -85,13 +116,9 @@ def text_stats(
         },
     )
 ) -> StatsResponse:
-    """Return the original text along with its word and character counts."""
+    """Return the original text along with word, character, and unique word counts."""
 
-    return StatsResponse(
-        text=payload.text,
-        word_count=count_words(payload.text),
-        char_count=len(payload.text),
-    )
+    return build_stats_response(payload.text)
 
 
 @app.post(
