@@ -19,9 +19,31 @@ Prosty serwis REST napisany w FastAPI, który udostępnia cztery endpointy:
 - **Zastosowanie**: oblicza liczbę słów w tekście przy zachowaniu oryginalnej treści.
 
 ### POST /stats
-- **Body (JSON)**: `{ "text": "dowolny tekst" }`
-- **Odpowiedź**: `{ "text": "dowolny tekst", "word_count": 2, "char_count": 13 }`
-- **Zastosowanie**: zwraca podstawowe statystyki tekstu (liczba słów i znaków).
+
+Krótki opis: endpoint analizuje dostarczony tekst i zwraca podstawowe statystyki, które pomagają szybko ocenić jego długość i złożoność.
+
+**Parametry wynikowe**
+- `word_count` – liczba słów (kolejne sekwencje znaków rozdzielone białymi znakami).
+- `char_count` – liczba znaków w oryginalnym ciągu (łącznie ze spacjami i znakami interpunkcyjnymi).
+- `unique_words` – liczba unikalnych słów po sprowadzeniu do małych liter i usunięciu interpunkcji.
+
+**Przykładowe żądanie**
+```json
+POST /stats
+{
+  "text": "Repeat, repeat; REPEAT."
+}
+```
+
+**Przykładowa odpowiedź**
+```json
+{
+  "text": "Repeat, repeat; REPEAT.",
+  "word_count": 3,
+  "char_count": 24,
+  "unique_words": 1
+}
+```
 
 ### POST /uppercase
 - **Body (JSON)**: `{ "text": "dowolny tekst" }`
@@ -45,10 +67,13 @@ pip install -r requirements.txt
 ## Uruchamianie API
 
 ```bash
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
 uvicorn main:app --reload
 ```
 
-Po uruchomieniu dokumentacja OpenAPI będzie dostępna pod `http://127.0.0.1:8000/docs`.
+Po uruchomieniu konsola pokaże adres `http://127.0.0.1:8000`, a dokumentacja OpenAPI będzie dostępna pod `/docs`.
 
 ## Testy
 
